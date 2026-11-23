@@ -200,18 +200,22 @@ export interface Client<F = unknown> {
      */
     isValid: (init_data: string) => Promise<boolean>;
     /**
-     * Validate data from webapp and trow if not valid
+     * Validate data from webapp and throw if not valid
      */
     validate: (init_data: string) => Promise<void>;
   };
 
+  /**
+   * Methods to validate user data from the
+   * [Telegram Login Widget](https://core.telegram.org/widgets/login)
+   */
   oauth: {
     /**
      * Validate user data from telegram widget and return boolean
      */
     isValid: (oauth_user: TelegramOAuthUser) => Promise<boolean>;
     /**
-     * Validate user data from telegram widget and trow if not valid
+     * Validate user data from telegram widget and throw if not valid
      */
     validate: (oauth_user: TelegramOAuthUser) => Promise<void>;
   };
