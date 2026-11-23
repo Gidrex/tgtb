@@ -57,8 +57,12 @@ export interface PollingTools {
   /**
    * Start long polling and yield updates
    *
-   * Offset advances only after the consumer requests the next update,
-   * so a thrown handler error redelivers the update on restart
+   * An update is confirmed only after the consumer requests the next one,
+   * so a thrown handler error redelivers it on restart. When the loop ends
+   * (`stop()`, `break`, or a throw), handled updates are confirmed.
+   * Network errors and 5xx/409/429 responses are retried with backoff,
+   * other 4xx errors (bad token, bad params) throw.
+   * Starting a new `updates()` loop stops the previous one
    *
    * @example Poll updates
    * ```ts
@@ -73,7 +77,8 @@ export interface PollingTools {
    */
   updates(options?: PollingOptions): AsyncGenerator<Update, void, unknown>;
   /**
-   * Stop polling after the in-flight getUpdates request returns
+   * Stop polling: no more updates are yielded, the in-flight getUpdates
+   * request is not aborted
    */
   stop(): void;
 }
