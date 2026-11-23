@@ -17,7 +17,7 @@ function sleep(ms: number): Promise<void> {
  */
 export default function buildPollingTools(
   bot_token: string,
-  config: TgtbConfig,
+  config: Required<TgtbConfig>,
 ): PollingTools {
   const api = buildCallMethod(bot_token, config);
   let running = false;

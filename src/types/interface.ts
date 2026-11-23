@@ -251,9 +251,14 @@ export interface TgtbConfig {
    */
   ed25519_public_key?: string | null;
   /**
-   * Number of times to retry a request on a 429, 5xx, network, or
-   * malformed-response failure, waiting `retry_after` seconds on 429 and
-   * backing off exponentially otherwise
+   * Number of times to retry a failed request, backing off exponentially
+   *
+   * - 429 is retried for every method, waiting `retry_after` seconds;
+   *   a `retry_after` over 60 seconds is returned to the caller instead
+   * - network errors, 5xx and malformed responses are retried only for
+   *   `get*` methods: the request may have been executed, and resending
+   *   e.g. `sendMessage` would post a duplicate
+   *
    * If 0, retrying is disabled
    * @default 3
    */
